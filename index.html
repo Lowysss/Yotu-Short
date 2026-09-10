@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <title>Yotu Short</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #070b14, #111827);
+      color: white;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.96);
+      border: 1px solid #263244;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.35);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .subtitle {
+      color: #aeb8c8;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    select,
+    textarea,
+    button {
+      width: 100%;
+      font-size: 16px;
+      border-radius: 13px;
+      border: 1px solid #334155;
+    }
+
+    select,
+    textarea {
+      background: #0b1220;
+      color: white;
+      padding: 13px;
+    }
+
+    select {
+      height: 48px;
+    }
+
+    textarea {
+      min-height: 390px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    button {
+      border: none;
+      padding: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      background: white;
+      color: #111827;
+      margin-top: 10px;
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    .secondary {
+      background: #1e293b;
+      color: white;
+      border: 1px solid #334155;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .status {
+      color: #86efac;
+      min-height: 20px;
+      font-size: 14px;
+    }
+
+    .counter {
+      color: #94a3b8;
+      font-size: 13px;
+      text-align: right;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 17px;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>🎬 Yotu Short</h1>
+
+    <p class="subtitle">
+      Generador gratuito de guiones para YouTube Shorts.
+      Crea un guion en segundos desde tu teléfono.
+    </p>
+
+    <!-- TEMA -->
+    <div class="section">
+
+      <label for="tema">📌 Tema</label>
+
+      <select id="tema">
+
+        <option value="biblia">
+          📖 Biblia / Fe
+        </option>
+
+        <option value="oracion">
+          🙏 Oración
+        </option>
+
+        <option value="dato">
+          🤯 Dato bíblico sorprendente
+        </option>
+
+        <option value="motivacion">
+          🔥 Motivación
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- DURACIÓN -->
+    <div class="section">
+
+      <label for="duracion">⏱️ Duración</label>
+
+      <select id="duracion">
+
+        <option value="35">
+          35 segundos
+        </option>
+
+        <option value="45">
+          45 segundos
+        </option>
+
+        <option value="60">
+          60 segundos
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- GENERAR -->
+
+    <div class="section">
+
+      <button onclick="generar()">
+        ✨ GENERAR SHORT
+      </button>
+
+    </div>
+
+
+    <!-- RESULTADO -->
+
+    <div class="section">
+
+      <label for="resultado">
+        📝 Guion generado
+      </label>
+
+      <textarea
+        id="resultado"
+        placeholder="Aquí aparecerá tu guion..."
+      ></textarea>
+
+      <div class="counter">
+        <span id="contador">0</span> caracteres
+      </div>
+
+    </div>
+
+
+    <!-- BOTONES -->
+
+    <div class="buttons">
+
+      <button
+        class="secondary"
+        onclick="copiar()"
+      >
+        📋 Copiar guion
+      </button>
+
+      <button
+        class="secondary"
+        onclick="generar()"
+      >
+        🔄 Otro guion
+      </button>
+
+    </div>
+
+
+    <p
+      id="estado"
+      class="status"
+    ></p>
+
+
+    <p class="subtitle">
+      💡 Consejo: copia el guion en CapCut, agrega un video de fondo,
+      subtítulos y música para crear tu Short.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const guiones = {
+
+  biblia: [
+
+    {
+      titulo: "David y Goliat",
+      texto:
+      "¿Y si tu problema no es demasiado grande? " +
+      "David vio a Goliat, pero decidió mirar primero a Dios. " +
+      "No necesitó ser el más fuerte; necesitó tener fe y dar un paso. " +
+      "Tal vez hoy estés frente a tu propio gigante. " +
+      "No te rindas. Dios puede darte fuerzas para enfrentarlo.",
+      referencia: "1 Samuel 17"
+    },
+
+    {
+      titulo: "Daniel y los leones",
+      texto:
+      "Daniel sabía que orar podía traerle problemas, " +
+      "pero decidió seguir confiando en Dios. " +
+      "Terminó en un foso rodeado de leones, " +
+      "pero Dios no lo abandonó. " +
+      "Si hoy estás pasando por algo difícil, recuerda esto: " +
+      "tu problema no es más grande que Dios.",
+      referencia: "Daniel 6"
+    },
+
+    {
+      titulo: "Salmo 23",
+      texto:
+      "Hay días en los que no sabes qué hacer " +
+      "ni hacia dónde ir. " +
+      "Pero el Salmo 23 nos recuerda que Dios es nuestro pastor. " +
+      "No significa que nunca tendremos problemas, " +
+      "sino que no tenemos que atravesarlos solos. " +
+      "Respira, confía y sigue adelante.",
+      referencia: "Salmo 23"
+    },
+
+    {
+      titulo: "José",
+      texto:
+      "José pasó por momentos que parecían destruir su futuro. " +
+      "Fue vendido por sus hermanos y terminó lejos de su familia. " +
+      "Pero Dios seguía trabajando aunque José no pudiera verlo. " +
+      "Si hoy tu vida parece ir en la dirección equivocada, " +
+      "no significa que tu historia terminó.",
+      referencia: "Génesis 37–50"
+    },
+
+    {
+      titulo: "Moisés",
+      texto:
+      "Moisés pensaba que no era capaz de cumplir la misión que Dios le daba. " +
+      "Tenía miedo y puso muchas excusas. " +
+      "Pero Dios no buscaba a alguien perfecto. " +
+      "Buscaba a alguien dispuesto a confiar. " +
+      "Tal vez tú también estés esperando sentirte preparado. " +
+      "A veces primero tienes que dar el paso.",
+      referencia: "Éxodo 3–4"
+    }
+
+  ],
+
+
+  oracion: [
+
+    {
+      titulo: "Cuando tengas miedo",
+      texto:
+      "Señor, hoy pongo en tus manos todo aquello que me preocupa. " +
+      "Dame paz cuando mi mente se llene de miedo, " +
+      "fuerza cuando quiera rendirme " +
+      "y sabiduría para tomar buenas decisiones. " +
+      "Cuida a mi familia y ayúdame a recordar que no estoy solo. " +
+      "Amén.",
+      referencia: "Filipenses 4:6-7"
+    },
+
+    {
+      titulo: "Antes de dormir",
+      texto:
+      "Dios, gracias por este día. " +
+      "Gracias por las cosas buenas y también por las lecciones difíciles. " +
+      "Perdona mis errores, cuida a mi familia " +
+      "y permite que mi mente descanse esta noche. " +
+      "Mañana será una nueva oportunidad. " +
+      "En tus manos dejo mis preocupaciones. Amén.",
+      referencia: "Salmo 4:8"
+    },
+
+    {
+      titulo: "Por la familia",
+      texto:
+      "Señor, te pido que cuides a mi familia. " +
+      "Protégelos cuando yo no pueda estar presente. " +
+      "Dales salud, paz y fuerza para enfrentar cada día. " +
+      "Ayúdame también a valorar el tiempo que tenemos juntos " +
+      "y a demostrarles cuánto los quiero. " +
+      "Amén.",
+      referencia: "Salmo 91"
+    }
+
+  ],
+
+
+  dato: [
+
+    {
+      titulo: "Jesús lloró",
+      texto:
+      "¿Sabías que uno de los versículos más cortos de la Biblia " +
+      "dice algo muy poderoso? " +
+      "Juan 11:35 dice: Jesús lloró. " +
+      "Esto nos recuerda que incluso Jesús experimentó dolor. " +
+      "Así que sentir tristeza o llorar no te hace débil. " +
+      "Tus emociones no te alejan de Dios.",
+      referencia: "Juan 11:35"
+    },
+
+    {
+      titulo: "El arca de Noé",
+      texto:
+      "Noé construyó el arca antes de ver la lluvia. " +
+      "Y aquí hay una enseñanza poderosa: " +
+      "a veces la fe significa actuar antes de tener todas las pruebas. " +
+      "Si sabes que necesitas cambiar algo en tu vida, " +
+      "no esperes a sentirte completamente preparado. " +
+      "Empieza con un pequeño paso.",
+      referencia: "Génesis 6–9"
+    },
+
+    {
+      titulo: "El buen samaritano",
+      texto:
+      "Jesús contó la historia de un hombre herido " +
+      "que fue ignorado por varias personas. " +
+      "Pero un samaritano decidió detenerse y ayudarlo. " +
+      "La enseñanza es sencilla: amar al prójimo " +
+      "no solamente significa decir palabras bonitas. " +
+      "También significa actuar cuando alguien necesita ayuda.",
+      referencia: "Lucas 10:25-37"
+    },
+
+    {
+      titulo: "Pedro caminó sobre el agua",
+      texto:
+      "Pedro hizo algo que parecía imposible: " +
+      "caminó sobre el agua hacia Jesús. " +
+      "Pero cuando comenzó a mirar la tormenta, tuvo miedo y comenzó a hundirse. " +
+      "A veces nos pasa lo mismo. " +
+      "Cuando dejamos de mirar a Dios y solamente miramos nuestros problemas, " +
+      "el miedo comienza a dominar.",
+      referencia: "Mateo 14:22-33"
+    }
+
+  ],
+
+
+  motivacion: [
+
+    {
+      titulo: "No te rindas",
+      texto:
+      "Quizá hoy sientas que estás avanzando demasiado lento. " +
+      "Pero lento no significa detenido. " +
+      "Cada pequeño esfuerzo cuenta. " +
+      "No compares tu capítulo uno con el capítulo veinte de otra persona. " +
+      "Sigue trabajando, sigue aprendiendo " +
+      "y sigue confiando en Dios. " +
+      "Tu historia todavía se está escribiendo.",
+      referencia: "Reflexión"
+    },
+
+    {
+      titulo: "Dios no te olvidó",
+      texto:
+      "Si estás esperando una respuesta y parece que nada cambia, " +
+      "escucha esto: el silencio no siempre significa abandono. " +
+      "Sigue haciendo tu parte, mantén la fe y no te rindas. " +
+      "Tal vez todavía no veas el camino, " +
+      "pero eso no significa que no exista.",
+      referencia: "Reflexión"
+    },
+
+    {
+      titulo: "Empieza hoy",
+      texto:
+      "No necesitas tener toda tu vida resuelta para comenzar. " +
+      "Solo necesitas dar el siguiente paso. " +
+      "Un pequeño esfuerzo repetido todos los días " +
+      "puede convertirse en un cambio enorme con el tiempo. " +
+      "No esperes al momento perfecto. " +
+      "Empieza con lo que tienes hoy.",
+      referencia: "Reflexión"
+    },
+
+    {
+      titulo: "Después de una caída",
+      texto:
+      "Caer no significa que hayas perdido. " +
+      "Significa que tienes la oportunidad de levantarte. " +
+      "No dejes que un error defina toda tu historia. " +
+      "Aprende, levántate y continúa. " +
+      "Dios todavía puede hacer algo grande con tu vida.",
+      referencia: "Reflexión"
+    }
+
+  ]
+
+};
+
+
+function obtenerGuion() {
+
+  const tema =
+    document.getElementById("tema").value;
+
+  const lista =
+    guiones[tema];
+
+  const indice =
+    Math.floor(Math.random() * lista.length);
+
+  return lista[indice];
+
+}
+
+
+function generar() {
+
+  const tema =
+    document.getElementById("tema").value;
+
+  const duracion =
+    parseInt(
+      document.getElementById("duracion").value
+    );
+
+  const guion =
+    obtenerGuion();
+
+  let cierre = "";
+
+  if (duracion >= 60) {
+
+    cierre =
+      "\n\nSi este mensaje llegó a tu corazón, " +
+      "guárdalo y compártelo con alguien que lo necesite.";
+
+  } else if (duracion >= 45) {
+
+    cierre =
+      "\n\nSi este mensaje te ayudó, " +
+      "compártelo con alguien que lo necesite.";
+
+  }
+
+  const resultado =
+
+    "🎬 HOOK\n\n" +
+
+    guion.titulo +
+
+    "\n\n" +
+
+    guion.texto +
+
+    cierre +
+
+    "\n\n📖 REFERENCIA\n" +
+
+    guion.referencia;
+
+
+  document.getElementById("resultado").value =
+    resultado;
+
+  actualizarContador();
+
+  document.getElementById("estado").textContent =
+    "✓ Short generado correctamente";
+
+}
+
+
+async function copiar() {
+
+  const textarea =
+    document.getElementById("resultado");
+
+  if (!textarea.value.trim()) {
+
+    generar();
+
+  }
+
+  try {
+
+    await navigator.clipboard.writeText(
+      textarea.value
+    );
+
+  } catch (error) {
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+  }
+
+  document.getElementById("estado").textContent =
+    "✓ Guion copiado al portapapeles";
+
+}
+
+
+function actualizarContador() {
+
+  const texto =
+    document.getElementById("resultado").value;
+
+  document.getElementById("contador").textContent =
+    texto.length;
+
+}
+
+
+document
+  .getElementById("resultado")
+  .addEventListener(
+    "input",
+    actualizarContador
+  );
+
+
+generar();
+
+</script>
+
+</body>
+</html>
